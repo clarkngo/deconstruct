@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Deconstruct</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="./">Deconstruct<span>.</span></a>
+      <nav><a href="./">All entries</a></nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <article class="entry">
+      <a class="crumb" href="./">← All entries</a>
+      <div id="content"><p class="empty">Loading…</p></div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">Deconstruct · first-principles knowledge base</div>
+  </footer>
+
+  <script>
+    const slug = new URLSearchParams(location.search).get('e') || '';
+    const content = document.getElementById('content');
+
+    function decorate() {
+      // Style the elevator pitch and "> Note:" callouts.
+      content.querySelectorAll('blockquote').forEach(bq => {
+        const text = bq.textContent.trim();
+        if (/^The 10-Second Elevator Pitch/i.test(text)) bq.classList.add('pitch');
+        else if (/^Note:/i.test(text)) bq.classList.add('note');
+      });
+      const h1 = content.querySelector('h1');
+      if (h1) document.title = h1.textContent + ' · Deconstruct';
+    }
+
+    if (!/^[a-z0-9-]+$/.test(slug)) {
+      content.innerHTML = '<p class="empty">Entry not found. <a href="./">Back to all entries</a>.</p>';
+    } else {
+      fetch(`entries/${slug}.md`)
+        .then(r => { if (!r.ok) throw new Error(r.status); return r.text(); })
+        .then(md => { content.innerHTML = marked.parse(md); decorate(); })
+        .catch(() => {
+          content.innerHTML = '<p class="empty">Entry not found. <a href="./">Back to all entries</a>.</p>';
+        });
+    }
+  </script>
+</body>
+</html>

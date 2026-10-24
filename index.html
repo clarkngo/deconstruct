@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Deconstruct</title>
+  <meta name="description" content="Dense technical ideas, rebuilt from first principles in plain language.">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="./">Deconstruct<span>.</span></a>
+      <nav><a href="https://github.com/clarkngo/deconstruct">GitHub</a></nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <h1>Hard ideas, taken apart.</h1>
+      <p>Papers, algorithms, and systems explained from first principles, so you can explain them out loud without leaning on buzzwords.</p>
+    </section>
+
+    <input id="q" class="search" type="search" placeholder="Search entries…" autocomplete="off" aria-label="Search entries">
+    <ul id="list" class="entry-list" aria-live="polite"></ul>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">Deconstruct · first-principles knowledge base</div>
+  </footer>
+
+  <script>
+    const list = document.getElementById('list');
+    const q = document.getElementById('q');
+    let entries = [];
+
+    const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+    function render(filter = '') {
+      const f = filter.trim().toLowerCase();
+      const shown = entries.filter(e =>
+        !f || [e.title, e.summary, ...(e.tags || [])].join(' ').toLowerCase().includes(f));
+      list.innerHTML = shown.length ? shown.map(e => `
+        <li><a href="entry.html?e=${encodeURIComponent(e.slug)}">
+          <h2>${esc(e.title)}</h2>
+          <p>${esc(e.summary)}</p>
+          <div class="tags">${(e.tags || []).map(t => `<span class="tag">${esc(t)}</span>`).join('')}</div>
+        </a></li>`).join('')
+        : `<li class="empty">No entries match “${esc(filter)}”.</li>`;
+    }
+
+    fetch('entries.json')
+      .then(r => r.json())
+      .then(data => {
+        entries = data.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+        render();
+      })
+      .catch(() => { list.innerHTML = '<li class="empty">Couldn’t load entries.</li>'; });
+
+    q.addEventListener('input', () => render(q.value));
+  </script>
+</body>
+</html>
