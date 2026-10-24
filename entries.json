@@ -1,5 +1,14 @@
 [
   {
+    "slug": "anomaly-detection",
+    "title": "Anomaly Detection",
+    "summary": "Every outlier detector is a bet on one assumption about how oddballs differ — pick the bet that matches your data.",
+    "tags": ["anomaly detection", "machine learning", "survey"],
+    "source": "Chandola, Banerjee & Kumar, ACM Computing Surveys 2009",
+    "date": "2026-10-24",
+    "related": []
+  },
+  {
     "slug": "isolation-forest",
     "title": "Isolation Forest",
     "summary": "Find anomalies by counting how few random cuts it takes to get a point alone — no distances, no model of 'normal'.",
@@ -7,6 +16,7 @@
     "source": "Liu, Ting & Zhou, ICDM 2008",
     "date": "2026-10-24",
     "related": [
+      { "slug": "anomaly-detection", "rel": "approach-to" },
       { "slug": "local-outlier-factor", "rel": "contrasts-with" },
       { "slug": "random-forest", "rel": "contrasts-with" }
     ]
