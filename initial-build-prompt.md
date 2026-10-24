@@ -56,4 +56,5 @@ Break down the execution flow into 3-5 simple, sequential steps:
 - Clear, punchy, and structured.
 - Use bold text for key insights.
 - Use clean Markdown callouts (`> Note:`) for critical warnings or insights.
+- When you name another concept that has (or should have) its own entry, link it inline as `[Name](entry.html?e=<slug>)`.
 - Write for a sharp engineer or decision-maker who values clarity and speed over academic fluff.
