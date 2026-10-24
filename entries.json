@@ -5,6 +5,10 @@
     "summary": "Find anomalies by counting how few random cuts it takes to get a point alone — no distances, no model of 'normal'.",
     "tags": ["anomaly detection", "machine learning", "trees", "paper"],
     "source": "Liu, Ting & Zhou, ICDM 2008",
-    "date": "2026-10-24"
+    "date": "2026-10-24",
+    "related": [
+      { "slug": "local-outlier-factor", "rel": "contrasts-with" },
+      { "slug": "random-forest", "rel": "contrasts-with" }
+    ]
   }
 ]

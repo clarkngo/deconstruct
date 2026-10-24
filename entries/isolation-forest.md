@@ -9,12 +9,12 @@
 - **The Old/Status Quo Approach:** Before 2008, nearly every anomaly detector worked by building a profile of normal data and then looking for misfits. They came in four main families:
   - **Statistical:** fit a bell curve and flag the tails.
   - **Distance-based:** "how far are you from your nearest neighbors?" (for example, ORCA and k-nearest-neighbor methods).
-  - **Density-based:** "is your neighborhood thinner than your neighbors' neighborhoods?" (for example, LOF).
+  - **Density-based:** "is your neighborhood thinner than your neighbors' neighborhoods?" (for example, [LOF](entry.html?e=local-outlier-factor)).
   - **Clustering/classification-based:** "do you fail to belong to any group?"
 
 - **Why It Sucked:**
   - **It was tuned for the wrong goal.** These systems are built to describe normal data well. Catching anomalies is a side effect. The result is **too many false alarms, or too few real catches.**
-  - **Comparing every point to every other point is expensive.** Distance and density methods compare points pairwise, so the cost grows roughly with the square of the data size. On the paper's 567,000-row network-intrusion dataset, ORCA took **about 2.6 hours**. LOF and Random Forests couldn't finish at all: LOF was too slow, and Random Forests needed memory that grows with the square of the dataset.
+  - **Comparing every point to every other point is expensive.** Distance and density methods compare points pairwise, so the cost grows roughly with the square of the data size. On the paper's 567,000-row network-intrusion dataset, ORCA took **about 2.6 hours**. LOF and [Random Forests](entry.html?e=random-forest) couldn't finish at all: LOF was too slow, and Random Forests needed memory that grows with the square of the dataset.
   - **Swamping and masking.** With lots of data, normal points that sit close to anomalies get flagged by mistake (swamping). Tight clumps of anomalies also look "dense" enough to pass as normal (masking). Adding more data makes both problems **worse**.
 
 ---

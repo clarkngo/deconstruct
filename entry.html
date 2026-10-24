@@ -19,6 +19,7 @@
     <article class="entry">
       <a class="crumb" href="./">← All entries</a>
       <div id="content"><p class="empty">Loading…</p></div>
+      <section id="connections" class="connections" hidden></section>
     </article>
   </main>
 
@@ -29,6 +30,18 @@
   <script>
     const slug = new URLSearchParams(location.search).get('e') || '';
     const content = document.getElementById('content');
+    const connections = document.getElementById('connections');
+
+    const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const titleize = s => s.split('-').map(w => w[0].toUpperCase() + w.slice(1)).join(' ');
+
+    // Each relation type, with its label from the declaring entry ("out")
+    // and from the entry it points at ("in"). Only "out" is stored in entries.json.
+    const RELS = {
+      'builds-on':      { out: 'Builds on',      in: 'Built on by' },
+      'contrasts-with': { out: 'Contrasts with', in: 'Contrasts with' },
+      'used-in':        { out: 'Used in',        in: 'Uses' },
+    };
 
     function decorate() {
       // Style the elevator pitch and "> Note:" callouts.
@@ -41,14 +54,60 @@
       if (h1) document.title = h1.textContent + ' · Deconstruct';
     }
 
+    function renderConnections(entries) {
+      const bySlug = Object.fromEntries(entries.map(e => [e.slug, e]));
+      const self = bySlug[slug];
+      if (!self) return;
+
+      // Group links by label, deduplicating by slug within each group.
+      const groups = {};
+      const add = (label, target, title) => {
+        if (target === slug) return;
+        groups[label] = groups[label] || new Map();
+        if (!groups[label].has(target)) groups[label].set(target, title);
+      };
+      for (const r of self.related || []) {
+        if (RELS[r.rel]) add(RELS[r.rel].out, r.slug, r.title);
+      }
+      for (const e of entries) {
+        for (const r of e.related || []) {
+          if (r.slug === slug && RELS[r.rel]) add(RELS[r.rel].in, e.slug);
+        }
+      }
+
+      const labels = [...new Set(Object.values(RELS).flatMap(v => [v.out, v.in]))].filter(l => groups[l]);
+      const tags = self.tags || [];
+      if (!labels.length && !tags.length) return;
+
+      const link = (target, title) => bySlug[target]
+        ? `<a href="entry.html?e=${encodeURIComponent(target)}">${esc(bySlug[target].title)}</a>`
+        : `<span class="unwritten" title="Not written yet">${esc(title || titleize(target))}</span>`;
+
+      connections.innerHTML = '<h2>Connections</h2>' +
+        (labels.length ? '<dl>' + labels.map(l => `<dt>${l}</dt><dd>${
+          [...groups[l]].map(([t, title]) => link(t, title)).join('')}</dd>`).join('') + '</dl>' : '') +
+        (tags.length ? `<div class="tags">${tags.map(t =>
+          `<a class="tag" href="./?tag=${encodeURIComponent(t)}">${esc(t)}</a>`).join('')}</div>` : '');
+      connections.hidden = false;
+    }
+
     if (!/^[a-z0-9-]+$/.test(slug)) {
       content.innerHTML = '<p class="empty">Entry not found. <a href="./">Back to all entries</a>.</p>';
     } else {
       fetch(`entries/${slug}.md`)
         .then(r => { if (!r.ok) throw new Error(r.status); return r.text(); })
-        .then(md => { content.innerHTML = marked.parse(md); decorate(); })
+        .then(md => {
+          content.innerHTML = marked.parse(md);
+          decorate();
+          return fetch('entries.json').then(r => r.json()).then(renderConnections).catch(() => {});
+        })
         .catch(() => {
-          content.innerHTML = '<p class="empty">Entry not found. <a href="./">Back to all entries</a>.</p>';
+          content.innerHTML = `<h1>${esc(titleize(slug))}</h1><p class="empty">This entry hasn’t been written yet. <a href="./">Back to all entries</a>.</p>`;
+          document.title = titleize(slug) + ' · Deconstruct';
+          fetch('entries.json').then(r => r.json()).then(entries => {
+            // Still show which written entries point here.
+            renderConnections([...entries, { slug, title: titleize(slug), tags: [] }]);
+          }).catch(() => {});
         });
     }
   </script>

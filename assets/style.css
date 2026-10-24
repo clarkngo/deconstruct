@@ -74,7 +74,12 @@ a { color: var(--accent); }
 .entry-list h2 { margin: 0 0 4px; font-size: 1.2rem; letter-spacing: -0.01em; }
 .entry-list p { margin: 0; color: var(--muted); font-size: 0.97rem; }
 .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-.tag { font-size: 0.75rem; padding: 2px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
+.entry-list .tags { margin: -8px 0 18px; }
+.tag { font-size: 0.75rem; padding: 2px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); text-decoration: none; }
+a.tag:hover { outline: 1px solid var(--accent); }
+.active-tag { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 0.9rem; margin: 8px 0 0; }
+.active-tag[hidden] { display: none; }
+.active-tag .clear { font: inherit; font-size: 0.85rem; color: var(--accent); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; }
 .empty { color: var(--muted); padding: 24px 0; }
 
 /* Entry */
@@ -100,6 +105,13 @@ a { color: var(--accent); }
 .entry table { border-collapse: collapse; width: 100%; display: block; overflow-x: auto; font-size: 0.95rem; }
 .entry th, .entry td { border: 1px solid var(--border); padding: 8px 10px; text-align: left; }
 .entry img { max-width: 100%; }
+.connections { margin-top: 48px; padding-top: 8px; border-top: 1px solid var(--border); }
+.connections h2 { font-size: 1.1rem; margin: 24px 0 12px; }
+.connections dl { margin: 0 0 16px; display: grid; grid-template-columns: max-content 1fr; gap: 8px 20px; }
+.connections dt { color: var(--muted); font-size: 0.9rem; }
+.connections dd { margin: 0; display: flex; flex-wrap: wrap; gap: 4px 14px; }
+.connections .unwritten { color: var(--muted); border-bottom: 1px dashed var(--border); cursor: help; }
+@media (max-width: 480px) { .connections dl { grid-template-columns: 1fr; gap: 2px; } .connections dd { margin-bottom: 10px; } }
 .entry .source { color: var(--muted); font-size: 0.9rem; }
 
 .site-footer { border-top: 1px solid var(--border); color: var(--muted); font-size: 0.85rem; padding: 20px 0 40px; }
