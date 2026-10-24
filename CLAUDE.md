@@ -14,7 +14,7 @@ The voice, rules, and required 5-section schema for every entry live in `initial
 
 Sometimes the user names a topic instead of supplying a PDF. Then:
 
-1. Find the seminal paper (the one that introduced the idea, not a survey or blog post) and confirm it with the user before writing: title, authors, venue, year, and a link.
+1. Find the seminal paper (the one that introduced the idea, not a survey or blog post). For a whole field with no single founding paper (e.g. anomaly detection), use the standard survey instead and confirm it with the user before writing: title, authors, venue, year, and a link.
 2. Read the paper itself, from an open copy (arXiv, the authors' page, or the publisher's open version). If you can only get the abstract or secondary sources, say so, and don't write numbers or claims you couldn't check against the paper.
 3. Write the entry from the paper as usual. The paper is the source; anything taken from later work or other sites follows the outside-knowledge rule above.
 
@@ -31,6 +31,7 @@ Sometimes the user names a topic instead of supplying a PDF. Then:
 - `builds-on`: this entry depends on or extends the other one (a prerequisite to read first).
 - `contrasts-with`: a competing or alternative approach to the same problem.
 - `used-in`: this idea is a component of the other one.
+- `approach-to`: this entry is one method for the broader problem or field the other entry covers (e.g. Isolation Forest → Anomaly Detection). Field entries become hubs listing their approaches.
 
 Record each link once, on the entry that declares it. The other entry shows the reverse link automatically ("Built on by", "Uses", "Contrasts with"), so don't add it there too. Slugs for entries that don't exist yet are fine: they show greyed out as "not written yet", and an optional `"title"` sets their display name. When you add a new entry, check whether existing entries already point at its slug.
 
