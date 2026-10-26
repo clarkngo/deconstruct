@@ -103,11 +103,17 @@
           return fetch('entries.json').then(r => r.json()).then(renderConnections).catch(() => {});
         })
         .catch(() => {
-          content.innerHTML = `<h1>${esc(titleize(slug))}</h1><p class="empty">This entry hasn’t been written yet. <a href="./">Back to all entries</a>.</p>`;
-          document.title = titleize(slug) + ' · Deconstruct';
+          const show = title => {
+            content.innerHTML = `<h1>${esc(title)}</h1><p class="empty">This entry hasn’t been written yet. <a href="./">Back to all entries</a>.</p>`;
+            document.title = title + ' · Deconstruct';
+          };
+          show(titleize(slug));
           fetch('entries.json').then(r => r.json()).then(entries => {
-            // Still show which written entries point here.
-            renderConnections([...entries, { slug, title: titleize(slug), tags: [] }]);
+            // Prefer a display title set on a link pointing here, then show who links here.
+            const ref = entries.flatMap(e => e.related || []).find(r => r.slug === slug && r.title);
+            const title = ref ? ref.title : titleize(slug);
+            show(title);
+            renderConnections([...entries, { slug, title, tags: [] }]);
           }).catch(() => {});
         });
     }

@@ -1,5 +1,17 @@
 [
   {
+    "slug": "garch",
+    "title": "GARCH",
+    "summary": "Forecast how jumpy a series will be from the latest surprise plus yesterday's own forecast — long memory of volatility with three numbers.",
+    "tags": ["time series", "econometrics", "volatility", "paper"],
+    "source": "Bollerslev, Journal of Econometrics 1986",
+    "date": "2026-10-26",
+    "related": [
+      { "slug": "arch", "rel": "builds-on", "title": "ARCH" },
+      { "slug": "arma", "rel": "builds-on", "title": "ARMA" }
+    ]
+  },
+  {
     "slug": "anomaly-detection",
     "title": "Anomaly Detection",
     "summary": "Every outlier detector is a bet on one assumption about how oddballs differ — pick the bet that matches your data.",
