@@ -1,5 +1,16 @@
 [
   {
+    "slug": "null-hypothesis",
+    "title": "Null Hypothesis",
+    "summary": "A test can't tell you if one hypothesis is true — it's a rule that caps false alarms, then misses as little as possible.",
+    "tags": ["statistics", "hypothesis testing", "paper"],
+    "source": "Neyman & Pearson, Phil. Trans. Royal Society A 1933",
+    "date": "2026-10-27",
+    "related": [
+      { "slug": "anomaly-detection", "rel": "used-in" }
+    ]
+  },
+  {
     "slug": "garch",
     "title": "GARCH",
     "summary": "Forecast how jumpy a series will be from the latest surprise plus yesterday's own forecast — long memory of volatility with three numbers.",
